@@ -1,0 +1,116 @@
+﻿@model UniversityManagementSystem.Models.AllocateRoom
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Allocate Classroom</h2>
+
+<div>
+    @using (Html.BeginForm())
+    {
+        <fieldset>
+
+            <table>
+                <tr>
+                    <td>@Html.LabelFor(m => m.DepartmentId)</td>
+                    <td>@Html.DropDownListFor(m => m.DepartmentId, new SelectList(ViewBag.Departments, "Value", "Text"), htmlAttributes: new { @id = "DepartmentId", @name = "DepartmentId" })</td>
+                    <td>@Html.ValidationMessageFor(m => m.DepartmentId)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.CourseId)</td>
+                    <td>@Html.DropDownListFor(m => m.CourseId, new SelectList(ViewBag.Courses, "Value", "Text"))</td>
+                    <td>@Html.ValidationMessageFor(m => m.CourseId)</td>
+
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.RoomId)</td>
+                    <td>@Html.DropDownListFor(m => m.RoomId, new SelectList(ViewBag.Rooms, "Value", "Text"))</td>
+                    <td>@Html.ValidationMessageFor(m => m.RoomId)</td>
+
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.Day)</td>
+                    <td>@Html.DropDownListFor(m => m.Day, new SelectList(ViewBag.Days, "Value", "Text"))</td>
+                    <td>@Html.ValidationMessageFor(m => m.Day)</td>
+
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.FromHour)</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.FromHour, new { placeholder = "hh" })
+                        @Html.ValidationMessageFor(m => m.FromHour)
+                        @Html.TextBoxFor(m => m.FromMin, new { placeholder = "mm" })
+                        @Html.ValidationMessageFor(m => m.FromMin)
+                        @Html.RadioButtonFor(m => m.FromFormat, "Am")Am
+                        @Html.RadioButtonFor(m => m.FromFormat, "Pm")Pm
+                        @Html.ValidationMessageFor(m => m.FromFormat)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>@Html.LabelFor(m => m.ToHour)</td>
+                    <td>
+                        @Html.TextBoxFor(m => m.ToHour, new { placeholder = "hh" })
+                        @Html.ValidationMessageFor(m => m.ToHour)
+                        @Html.TextBoxFor(m => m.ToMin, new { placeholder = "mm" })
+                        @Html.ValidationMessageFor(m => m.ToMin)
+                        @Html.RadioButtonFor(m => m.ToFormat, "Am")Am
+                        @Html.RadioButtonFor(m => m.ToFormat, "Pm")Pm
+                        @Html.ValidationMessageFor(m => m.ToFormat)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="submit" id="Allocate" name="Allocate" value="Allocate" />
+                    </td>
+                </tr>
+
+            </table>
+
+
+
+        </fieldset>
+    }
+</div>
+
+
+<h3 align="center">@ViewBag.Message</h3>
+
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+@section scripts
+{
+    <script>
+
+        $(document).ready(function() {
+                $("#DepartmentId").change(function() {
+
+                        var deptId = $("#DepartmentId").val();
+                        $("#CourseId").empty();
+                        $("#CourseId").append('<option value="">Select...</option>');
+
+                        var json = { departmentId: deptId };
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("GetCourseByDepartmentId", "AllocateClassroom")',
+                            //url: '/Department/GetStudentsByDepartmentId',
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify(json),
+                            success: function(data) {
+
+                                $.each(data, function(key, value) {
+                                    $("#CourseId").append('<option value=' + value.Id + '>' + value.Code + '</option>');
+                                });
+                            }
+                        });
+                    }
+                );
+            }
+        )
+    </script>
+}
+

@@ -1,0 +1,12 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Unassign All Class Rooms</h2>
+@using (Html.BeginForm("UnassignAllClassRooms","UnassignAllClassRooms",FormMethod.Post))
+{
+    <input type="submit" value="Unassign All Class Rooms"/>
+}
+

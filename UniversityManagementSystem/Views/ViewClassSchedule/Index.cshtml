@@ -1,0 +1,99 @@
+﻿@using UniversityManagementSystem.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<Department> departments = ViewBag.Departments;
+    
+}
+
+<h2>Index</h2>
+
+<form method="post" id="ShowScheduleForm">
+
+    <fieldset>
+
+        <legend> Allocate Classroom </legend>
+
+        <table>
+            <tr>
+                <td><label for="DepartmentId">Department</label></td>
+                <td>
+                    <select id="DepartmentId" name="DepartmentId">
+                        <option value="">Select..</option>
+                        @foreach (Department department in departments)
+                        {
+                            <option value="@department.Id">@department.Name</option>
+                        }
+                    </select>
+
+                </td>
+
+            </tr>
+        </table>
+
+        <table id="ClassScheduleTable" class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Course Code</th>
+                    <th>Name</th>
+                    <th>Schedule Info</th>
+
+                </tr>
+            </thead>
+            <tbody id="ClassScheduleTableBody"></tbody>
+
+        </table>
+    </fieldset>
+</form>
+
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#ClassScheduleTable").hide();
+        $("#DepartmentId").change(function () {
+
+                $("#ClassScheduleTableBody").empty();
+            var deptId = $("#DepartmentId").val();
+
+                var json = { departmentId: deptId };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetScheduledRoomByDepartmentId", "ViewClassSchedule")',
+                    //url: '/Department/GetStudentsByDepartmentId',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (data) {
+                       // alert(data);
+                        $("#ClassScheduleTable").show();
+
+                        $.each(data, function (key, value) {
+                            if (value.Info!=null && value.Info!="") {
+                                $("#ClassScheduleTableBody").append('<tr><td>' + value.CourseCode + '</td><td>' + value.CourseName + '</td><td>' + value.Info + '</td></tr>');
+                            }
+                            else if (value.Info==null || value.Info.length==0){
+                                $("#ClassScheduleTableBody").append('<tr><td>' + value.CourseCode + '</td><td>' + value.CourseName + '</td><td>Not Scheduled Yet!</td></tr>');
+
+                                }
+                            });
+                    }
+                });
+            }
+        );
+
+
+        $("#ShowScheduleForm").validate({
+            rules: {
+
+                DepartmentId: "required"
+
+            },
+            messages: {
+
+            }
+        });
+
+    });
+</script>

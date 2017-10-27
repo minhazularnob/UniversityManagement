@@ -1,0 +1,120 @@
+﻿@model UniversityManagementSystem.Models.CourseStudent
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var students = ViewBag.students;
+    var courses = ViewBag.courses;
+    var grades = ViewBag.grades;
+}
+
+<h2>Save Student Result</h2>
+<div>
+    @using (Html.BeginForm())
+    {
+        <fieldset>
+            <table>
+                <tr>
+                    <td>@Html.LabelFor(m => m.StudentId)</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.StudentId, new SelectList(students, "StudentId", "RegistrationNumber"))
+                    </td>
+                    <td>@Html.ValidationMessageFor(m => m.StudentId)</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Name")</td>
+                    <td>@Html.TextBox("Name", " ", new { @readonly = "readonly" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Email")</td>
+                    <td>@Html.TextBox("Email", " ", new { @readonly = "readonly" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Department")</td>
+                    <td>@Html.TextBox("Department", " ", new { @readonly = "readonly" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.CourseId)</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.CourseId,new SelectList(courses,"Id","CourseName"))
+                    </td>
+                    <td>@Html.ValidationMessageFor(m => m.CourseId)</td>
+                </tr>
+                @*<tr>
+                    <td>@Html.Label("OldGrade","Previous Grade")</td>
+                    <td>@Html.TextBox("OldGrade")</td>
+                </tr>*@
+                <tr>
+                    <td>@Html.LabelFor(m => m.Grade)</td>
+                    <td>
+                        @Html.DropDownListFor(m => m.Grade, new SelectList(grades, "Value", "Text"))
+                    </td>
+                    <td>@Html.ValidationMessageFor(m => m.Grade)</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Save"/></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>@ViewBag.message</td>
+                </tr>
+            </table>
+        </fieldset>
+    }
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            //$("#studentTable").hide();
+            $("#StudentId").change(function () {
+                var studentId = $("#StudentId").val();
+
+                $("#CourseId").empty();
+
+                //$("#CourseAvailability").val(null);
+                $("#CourseId").append('<option value="">--Select--</option>');
+                var json = { StudentId: studentId };
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetEnrolledCourseListByStudentId", "SaveStudentResult")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function(data) {
+                        $.each(data, function(key, value) {
+                            $("#CourseId").append('<option value=' + value.Id + '>' + value.CourseName + '</option>');
+
+                        });
+                    }
+                });
+            });
+
+            $("#StudentId").change(function () {
+                var studentId = $("#StudentId").val();
+
+
+                var json = { StudentId: studentId };
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("GetStudentById", "SaveStudentResult")',
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(json),
+                    success: function (response) {
+                        console.log(response);
+                        $("#Name").val(response.Name);
+                        $("#Email").val(response.Email);
+                        $("#Department").val(response.Address);
+
+                    }
+                });
+            });            
+        });
+    </script>
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}
+
+
+
+

@@ -1,0 +1,63 @@
+﻿@model UniversityManagementSystem.Models.Course
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>View Course Statics</h2>
+<div>
+    @using (Html.BeginForm(null,null, FormMethod.Post, new {id="viewCourseStaticsForm"}))
+    {
+        <fieldset>
+            <div>
+                @Html.Label("Department")
+                @Html.DropDownList("Department", new SelectList(ViewBag.departments, "Id", "Name"))
+            </div>
+            <div>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>@Html.Label("Code")</td>
+                        <td>@Html.Label("Title", "Name/Title")</td>
+                        <td>@Html.Label("Semester")</td>
+                        <td>@Html.Label("Credit")</td>
+                        <td>@Html.Label("AssignedTo", "Assigned To")</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @{
+                        foreach (var v in ViewBag.courses)
+                        {
+                            <tr>
+                                <td>@v.Code</td>
+                                <td>@v.CourseName</td>
+                                <td>@v.SemesterId</td>
+                                <td>@v.Credit</td>
+                                <td>@v.Description</td>
+
+                            </tr>
+                        }
+                    }
+                    </tbody>
+
+                </table>
+            </div>
+        </fieldset>
+
+    }
+</div>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            $("#Department").change(function () {
+                document.getElementById("viewCourseStaticsForm").submit();
+            });            
+      });                        
+    </script>
+    <script src="~/Scripts/jquery-3.2.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+}
+

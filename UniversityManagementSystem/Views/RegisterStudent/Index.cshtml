@@ -1,0 +1,56 @@
+﻿@model UniversityManagementSystem.Models.Student
+@{
+    ViewBag.Title = "Student";
+    
+}
+
+<h2>Register Student</h2>
+    @using (Html.BeginForm("Index", "RegisterStudent", FormMethod.Post, new {id = "studentRegistration"}))
+    {
+        <table>
+            <tr>
+                <td>@Html.LabelFor(m => m.Name)</td>
+                <td>@Html.TextBoxFor(m => m.Name)</td>
+                <td>@Html.ValidationMessageFor(m => m.Name)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.Email)</td>
+                <td>@Html.TextBoxFor(m => m.Email)</td>
+                <td>@Html.ValidationMessageFor(m => m.Email)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.Contact)</td>
+                <td>@Html.TextBoxFor(m => m.Contact)</td>
+                <td>@Html.ValidationMessageFor(m => m.Contact)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.Date)</td>
+                @*<td>@ViewBag.dateTime</td>*@
+                <td>@Html.EditorFor(m => m.Date)</td>
+                <td>@Html.ValidationMessageFor(m => m.Date)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.Address)</td>
+                <td>@Html.TextBoxFor(m => m.Address)</td>
+                <td>@Html.ValidationMessageFor(m => m.Address)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(m => m.DepartmentId)</td>
+                <td>
+                    @Html.DropDownListFor(m => m.DepartmentId, new SelectList(ViewBag.Departments, "Id", "Name"))
+                </td>
+                <td>@Html.ValidationMessageFor(m => m.DepartmentId)</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit" value="Register"/></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>@ViewBag.message</td>
+            </tr>
+        </table>
+    }
+<script src="~/Scripts/jquery-3.2.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

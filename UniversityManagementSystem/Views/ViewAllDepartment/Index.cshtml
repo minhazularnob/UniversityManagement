@@ -1,0 +1,28 @@
+﻿@using UniversityManagementSystem.Models
+@{
+    ViewBag.Title = "Index";
+    List<Department> departments = ViewBag.departments;
+}
+
+<h2>Departments List</h2>
+<fieldset>
+    <table>
+        <thead>
+        <tr>
+            <td><b>Code</b></td>
+            <td><b>Name</b></td>
+        </tr>
+        </thead>
+        <tbody>
+        @{
+            foreach (Department department in departments)
+            {
+                <tr>
+                    <td>@department.Code</td>
+                    <td>@department.Name</td>
+                </tr>                  
+            }
+        }
+        </tbody>
+    </table>
+</fieldset>

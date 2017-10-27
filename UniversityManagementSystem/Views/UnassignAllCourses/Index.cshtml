@@ -1,0 +1,16 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Unassign All Courses</h2>
+@using (Html.BeginForm("UnassignCourses","UnassignAllCourses",FormMethod.Post))
+{
+    <fieldset>
+        <input type="submit" value="Unassign All Courses"/>
+        
+    </fieldset>
+}   
+
+

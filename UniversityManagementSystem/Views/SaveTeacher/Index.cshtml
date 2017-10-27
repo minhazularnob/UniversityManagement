@@ -1,0 +1,61 @@
+﻿@using UniversityManagementSystem.Models
+@model UniversityManagementSystem.Models.Teacher
+
+@{
+    ViewBag.Title = "Teacher";
+    List<Department> departments = ViewBag.departments;
+    List<Designation> designations = ViewBag.designations;
+}
+
+<h2>Save Teacher</h2>
+<div>
+    @using (Html.BeginForm("Index", "SaveTeacher", FormMethod.Post, new { id = "saveTeacherForm" }))
+    {
+        <fieldset>
+            <table>
+                <tr>
+                    <td>@Html.LabelFor(m => m.Name)</td>
+                    <td>@Html.TextBoxFor(m => m.Name)</td>
+                    <td>@Html.ValidationMessageFor(m => m.Name)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.Address)</td>
+                    <td>@Html.TextAreaFor(m => m.Address)</td>
+                    <td>@Html.ValidationMessageFor(m => m.Address)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.Email)</td>
+                    <td>@Html.TextBoxFor(m => m.Email)</td>
+                    <td>@Html.ValidationMessageFor(m => m.Email)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.ContactNo)</td>
+                    <td>@Html.TextAreaFor(m => m.ContactNo)</td>
+                    <td>@Html.ValidationMessageFor(m => m.ContactNo)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.DesignationId)</td>
+                    <td>@Html.DropDownListFor(m => m.DesignationId, new SelectList(ViewBag.designations, "Id", "DesignationName"))</td>
+                    <td>@Html.ValidationMessageFor(m => m.DesignationId)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.DepartmentId)</td>
+                    <td>@Html.DropDownListFor(m => m.DepartmentId, new SelectList(ViewBag.departments, "Id", "Name"))</td>
+                    <td>@Html.ValidationMessageFor(m => m.DepartmentId)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.CreditToBeTaken)</td>
+                    <td>@Html.TextBoxFor(m => m.CreditToBeTaken)</td>
+                    <td>@Html.ValidationMessageFor(m => m.CreditToBeTaken)</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Save" /></td>
+                </tr>
+                <tr>
+                    <td>@ViewBag.message</td>
+                </tr>
+            </table>
+        </fieldset>
+    }
+</div>

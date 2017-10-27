@@ -1,0 +1,56 @@
+﻿@using UniversityManagementSystem.Models
+@model UniversityManagementSystem.Models.Course
+@{
+    ViewBag.Title = "Course";
+    List<Department> departments = ViewBag.departments;
+    List<Semester> semesters = ViewBag.semesters;   
+}
+
+<h2>Save Course</h2>
+<div>
+    @using (Html.BeginForm("Index", "SaveCourse", FormMethod.Post, new {id = "saveCourseForm"}))
+    {
+        <fieldset>
+            <table>
+                <tr>
+                    <td>@Html.LabelFor(m => m.Code)</td>
+                    <td>@Html.TextBoxFor(m => m.Code)</td>
+                    <td>@Html.ValidationMessageFor(m => m.Code)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.CourseName)</td>
+                    <td>@Html.TextBoxFor(m => m.CourseName)</td>
+                    <td>@Html.ValidationMessageFor(m => m.CourseName)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.Credit)</td>
+                    <td>@Html.TextBoxFor(m => m.Credit)</td>
+                    <td>@Html.ValidationMessageFor(m => m.Credit)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.Description)</td>
+                    <td>@Html.TextAreaFor(m => m.Description)</td>
+                    <td>@Html.ValidationMessageFor(m => m.Description)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.DepartmentId)</td>
+                    <td>@Html.DropDownListFor(m => m.DepartmentId, new SelectList(ViewBag.departments, "Id", "Name"))</td>
+                    <td>@Html.ValidationMessageFor(m => m.DepartmentId)</td>
+                </tr>
+                <tr>
+                    <td>@Html.LabelFor(m => m.SemesterId)</td>
+                    <td>@Html.DropDownListFor(m => m.SemesterId, new SelectList(ViewBag.semesters, "Id", "Name"))</td>
+                    <td>@Html.ValidationMessageFor(m => m.SemesterId)</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="submit" value="Save"/></td>
+                </tr>
+                <tr>
+                    <td>@ViewBag.message</td>
+                </tr>
+            </table>
+        </fieldset>
+    }
+</div>
+
